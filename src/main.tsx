@@ -23,6 +23,7 @@ function AppWithProviders() {
     <NeonAuthUIProvider
       authClient={authClient}
       social={{ providers: ['google'] }}
+      credentials={false}
       navigate={navigate}
       Link={NeonLink}
     >

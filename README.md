@@ -26,6 +26,9 @@ Log your reps throughout the day and track your progress toward each day's goals
 # Install dependencies
 npm install
 
+# Link to your Netlify site (required for env vars)
+netlify link
+
 # Start dev server
 npm run dev
 ```
@@ -34,12 +37,11 @@ The app runs at `http://localhost:5173`.
 
 ## Environment Variables
 
-Create a `.env` file based on `.env.example`:
+Environment variables are managed in the Netlify dashboard and automatically available locally via `@netlify/vite-plugin` after running `netlify link`.
 
-```
-VITE_NEON_AUTH_URL=<your-neon-auth-url>
-DATABASE_URL=<your-database-url>
-```
+Required variables (set in Netlify dashboard):
+- `VITE_NEON_AUTH_URL` - Neon Auth endpoint URL
+- `NETLIFY_DATABASE_URL` - Auto-set by Netlify DB extension
 
 ## Database
 

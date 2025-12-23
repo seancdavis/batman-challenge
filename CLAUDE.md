@@ -29,12 +29,19 @@ User data is managed by Neon Auth in the `neon_auth` schema.
 ## Commands
 
 ```bash
+netlify link         # Link to Netlify site (required for env vars)
 npm run dev          # Start dev server
 npm run build        # Build for production
-npm run db:push      # Push schema to database
+npm run db:push      # Push schema to database (run via: npx netlify dev:exec npm run db:push)
 npm run db:generate  # Generate migrations
 npm run db:studio    # Open Drizzle Studio
 ```
+
+## Local Development Notes
+
+- Must run `netlify link` before `npm run dev` to get environment variables
+- The `@netlify/vite-plugin` automatically injects Netlify env vars after linking
+- Database commands need Netlify context: `npx netlify dev:exec <command>`
 
 ## Conventions
 
