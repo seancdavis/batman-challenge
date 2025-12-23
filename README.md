@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# Batman Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A 30-day fitness challenge tracker built with React, Netlify, and Neon.
 
-Currently, two official plugins are available:
+## The Challenge
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The Batman Challenge is a progressive 30-day workout program alternating between:
 
-## React Compiler
+- **Odd days**: Squats + Push-ups (starting at 100/60, building to 400/250)
+- **Even days**: Sit-ups (starting at 60, building to 200)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Log your reps throughout the day and track your progress toward each day's goals.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend**: Vite + React + TypeScript
+- **Styling**: Tailwind CSS
+- **Auth**: Neon Auth (BetterAuth) with Google OAuth
+- **Database**: Netlify DB (Neon Postgres) + Drizzle ORM
+- **API**: Netlify Functions
+- **Hosting**: Netlify
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Local Development
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+```bash
+# Install dependencies
+npm install
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start dev server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The app runs at `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Environment Variables
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Create a `.env` file based on `.env.example`:
+
 ```
+VITE_NEON_AUTH_URL=<your-neon-auth-url>
+DATABASE_URL=<your-database-url>
+```
+
+## Database
+
+This project uses Drizzle ORM with Neon Postgres.
+
+```bash
+# Push schema to database
+npm run db:push
+
+# Generate migrations
+npm run db:generate
+
+# Open Drizzle Studio
+npm run db:studio
+```
+
+## Deployment
+
+### Via Netlify Git Integration
+
+1. Push to GitHub/GitLab/Bitbucket
+2. Connect repo in Netlify dashboard
+3. Enable Netlify DB extension (auto-sets `DATABASE_URL`)
+4. Add `VITE_NEON_AUTH_URL` environment variable
+5. Configure Google OAuth in Neon Auth dashboard
+
+Deploys automatically on push to `main`.
+
+## Project Structure
+
+```
+├── src/
+│   ├── components/
+│   │   ├── ui/           # Button, Input, Card, ProgressBar
+│   │   ├── layout/       # Header, Layout
+│   │   └── challenge/    # ExerciseInput, ChallengeCalendar
+│   ├── pages/            # HomePage, DashboardPage, DayDetailPage
+│   ├── hooks/            # useAuth, useChallenge, useDailyReps
+│   ├── lib/              # auth, api, challengeData
+│   └── types/
+├── netlify/functions/    # API endpoints
+├── db/                   # Database schema
+└── drizzle/              # Migrations
+```
+
+## License
+
+MIT
