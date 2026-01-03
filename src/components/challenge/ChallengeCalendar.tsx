@@ -13,7 +13,8 @@ export function ChallengeCalendar({ currentDay, completedDays }: ChallengeCalend
         30-Day Calendar
       </h3>
 
-      <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-2">
+      {/* 7-column grid for weekly view */}
+      <div className="grid grid-cols-7 gap-2">
         {CHALLENGE_GOALS.map((day) => {
           const isCompleted = completedDays.includes(day.day)
           const isCurrent = day.day === currentDay

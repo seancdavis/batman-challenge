@@ -7,7 +7,7 @@ import { useDailyReps } from '../hooks/useDailyReps'
 import { getDayGoals } from '../lib/challengeData'
 
 export function DashboardPage() {
-  const { challenge, isLoading, currentDay, startChallenge } = useChallenge()
+  const { challenge, completedDays, isLoading, currentDay, startChallenge, refetch } = useChallenge()
   const {
     progress,
     isComplete: dayComplete,
@@ -15,7 +15,6 @@ export function DashboardPage() {
     addReps,
   } = useDailyReps(challenge?.id, currentDay)
 
-  const [completedDays] = useState<number[]>([])
   const [isStarting, setIsStarting] = useState(false)
 
   const dayGoals = getDayGoals(currentDay)
@@ -27,6 +26,13 @@ export function DashboardPage() {
     } finally {
       setIsStarting(false)
     }
+  }
+
+  // Refetch challenge data when day is completed to update completedDays
+  const handleAddReps = async (exerciseType: string, reps: number) => {
+    await addReps(exerciseType, reps)
+    // Refetch to update completed days in calendar
+    refetch()
   }
 
   // Loading state
@@ -62,8 +68,8 @@ export function DashboardPage() {
     )
   }
 
-  // Calculate overall progress
-  const overallProgress = Math.round(((currentDay - 1 + (dayComplete ? 1 : 0)) / 30) * 100)
+  // Calculate overall progress based on completed days (not current day)
+  const overallProgress = Math.round((completedDays.length / 30) * 100)
 
   return (
     <div className="space-y-8">
@@ -78,9 +84,9 @@ export function DashboardPage() {
           </p>
         </div>
         <div className="text-right">
-          <div className="text-4xl font-headline text-batman-yellow">{overallProgress}%</div>
+          <div className="text-4xl font-headline text-batman-yellow">{completedDays.length}/30</div>
           <div className="text-batman-muted text-sm font-subheading uppercase tracking-wide">
-            Overall Progress
+            Days Complete
           </div>
         </div>
       </div>
@@ -105,7 +111,7 @@ export function DashboardPage() {
                     exerciseType={exercise.exerciseType}
                     currentTotal={exercise.completed}
                     targetReps={exercise.target}
-                    onAddReps={(reps) => addReps(exercise.exerciseType, reps)}
+                    onAddReps={(reps) => handleAddReps(exercise.exerciseType, reps)}
                     isLoading={isAdding}
                   />
                 ))
@@ -115,7 +121,7 @@ export function DashboardPage() {
                     exerciseType={exercise.type}
                     currentTotal={0}
                     targetReps={exercise.reps}
-                    onAddReps={(reps) => addReps(exercise.type, reps)}
+                    onAddReps={(reps) => handleAddReps(exercise.type, reps)}
                     isLoading={isAdding}
                   />
                 ))}

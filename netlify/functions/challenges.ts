@@ -1,8 +1,9 @@
 import type { Context } from '@netlify/functions'
 import { neon } from '@netlify/neon'
 import { drizzle } from 'drizzle-orm/neon-http'
-import { eq, and, desc } from 'drizzle-orm'
-import { challenges } from '../../db/schema'
+import { eq, and, desc, sql } from 'drizzle-orm'
+import { challenges, repEntries } from '../../db/schema'
+import { getDayGoals } from '../../src/lib/challengeData'
 
 // Helper to get user ID from request (via Neon Auth session cookie)
 async function getUserId(req: Request): Promise<string | null> {
@@ -12,9 +13,51 @@ async function getUserId(req: Request): Promise<string | null> {
   return userId
 }
 
+// Calculate which days are complete for a challenge
+async function getCompletedDays(
+  db: ReturnType<typeof drizzle>,
+  challengeId: string
+): Promise<number[]> {
+  // Get all rep entries grouped by day
+  const entries = await db
+    .select({
+      dayNumber: repEntries.dayNumber,
+      exerciseType: repEntries.exerciseType,
+      totalReps: sql<number>`sum(${repEntries.reps})`.as('total_reps'),
+    })
+    .from(repEntries)
+    .where(eq(repEntries.challengeId, challengeId))
+    .groupBy(repEntries.dayNumber, repEntries.exerciseType)
+
+  // Group by day and check if all exercises are complete
+  const dayProgress: Record<number, Record<string, number>> = {}
+  for (const entry of entries) {
+    if (!dayProgress[entry.dayNumber]) {
+      dayProgress[entry.dayNumber] = {}
+    }
+    dayProgress[entry.dayNumber][entry.exerciseType] = entry.totalReps
+  }
+
+  const completedDays: number[] = []
+  for (const [dayStr, exerciseTotals] of Object.entries(dayProgress)) {
+    const dayNumber = parseInt(dayStr)
+    const dayGoals = getDayGoals(dayNumber)
+    if (!dayGoals) continue
+
+    const isComplete = dayGoals.exercises.every(
+      (exercise) => (exerciseTotals[exercise.type] || 0) >= exercise.reps
+    )
+    if (isComplete) {
+      completedDays.push(dayNumber)
+    }
+  }
+
+  return completedDays.sort((a, b) => a - b)
+}
+
 export default async (req: Request, context: Context) => {
-  const sql = neon()
-  const db = drizzle(sql)
+  const sqlClient = neon()
+  const db = drizzle(sqlClient)
 
   const userId = await getUserId(req)
   if (!userId) {
@@ -33,7 +76,14 @@ export default async (req: Request, context: Context) => {
       .orderBy(desc(challenges.createdAt))
       .limit(1)
 
-    return new Response(JSON.stringify({ challenge: result[0] || null }), {
+    const challenge = result[0] || null
+    let completedDays: number[] = []
+
+    if (challenge) {
+      completedDays = await getCompletedDays(db, challenge.id)
+    }
+
+    return new Response(JSON.stringify({ challenge, completedDays }), {
       headers: { 'Content-Type': 'application/json' },
     })
   }
@@ -59,7 +109,7 @@ export default async (req: Request, context: Context) => {
       })
       .returning()
 
-    return new Response(JSON.stringify({ challenge: newChallenge }), {
+    return new Response(JSON.stringify({ challenge: newChallenge, completedDays: [] }), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },
     })

@@ -30,11 +30,11 @@ async function apiFetch<T>(
 
 // Challenge APIs
 export async function getActiveChallenge(userId: string) {
-  return apiFetch<{ challenge: Challenge | null }>('/api/challenges', { userId })
+  return apiFetch<{ challenge: Challenge | null; completedDays: number[] }>('/api/challenges', { userId })
 }
 
 export async function startChallenge(userId: string, startDate?: string) {
-  return apiFetch<{ challenge: Challenge }>('/api/challenges', {
+  return apiFetch<{ challenge: Challenge; completedDays: number[] }>('/api/challenges', {
     method: 'POST',
     body: JSON.stringify({ startDate }),
     userId,

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { UserButton, SignedIn, SignedOut } from '@neondatabase/neon-js/auth/react/ui'
+import { SignedIn, SignedOut } from '@neondatabase/neon-js/auth/react/ui'
 import { Button } from '../ui'
+import { UserMenu } from '../ui/UserMenu'
 
 export function Header() {
   return (
@@ -10,7 +11,7 @@ export function Header() {
           <span className="text-3xl font-headline text-batman-yellow text-shadow-comic tracking-wider">
             BATMAN
           </span>
-          <span className="text-batman-cream text-sm font-subheading uppercase tracking-wide opacity-80 group-hover:opacity-100 transition-opacity">
+          <span className="text-batman-cream text-sm font-subheading uppercase tracking-wide opacity-80 group-hover:opacity-100 transition-opacity hidden sm:block">
             30-Day Challenge
           </span>
         </Link>
@@ -22,7 +23,7 @@ export function Header() {
                 Dashboard
               </Button>
             </Link>
-            <UserButton />
+            <UserMenu />
           </SignedIn>
 
           <SignedOut>

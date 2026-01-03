@@ -6,6 +6,7 @@ import type { Challenge } from '../lib/api'
 export function useChallenge() {
   const { user } = useAuth()
   const [challenge, setChallenge] = useState<Challenge | null>(null)
+  const [completedDays, setCompletedDays] = useState<number[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -18,6 +19,7 @@ export function useChallenge() {
     try {
       const result = await getActiveChallenge(user.id)
       setChallenge(result.challenge)
+      setCompletedDays(result.completedDays || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load challenge')
     } finally {
@@ -39,6 +41,7 @@ export function useChallenge() {
       try {
         const result = await startChallenge(user.id, startDate)
         setChallenge(result.challenge)
+        setCompletedDays(result.completedDays || [])
         return result.challenge
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to start challenge')
@@ -64,6 +67,7 @@ export function useChallenge() {
 
   return {
     challenge,
+    completedDays,
     isLoading,
     error,
     currentDay: getCurrentDay(),

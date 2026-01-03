@@ -15,8 +15,8 @@ export function SignInPage() {
   }, [session, navigate])
 
   return (
-    <div className="min-h-screen bg-batman-black bg-halftone flex items-center justify-center">
-      <div className="w-full max-w-md p-8">
+    <div className="min-h-screen bg-batman-black bg-halftone flex items-center justify-center px-4">
+      <div className="w-full max-w-sm">
         <div className="text-center mb-10">
           <h1 className="text-5xl font-headline text-batman-yellow text-shadow-comic tracking-wider mb-3">
             BATMAN
@@ -32,14 +32,12 @@ export function SignInPage() {
       </div>
       <style>{`
         .neon-auth-wrapper {
-          --radius: 0;
           color: white;
         }
         .neon-auth-wrapper > div {
           background: #1a1a1a;
           border: 3px solid #3a3a3a;
           box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.8);
-          border-radius: 0;
           padding: 2rem;
         }
         .neon-auth-wrapper h1,
@@ -52,9 +50,16 @@ export function SignInPage() {
           text-transform: uppercase;
         }
         .neon-auth-wrapper p,
+        .neon-auth-wrapper span,
         .neon-auth-wrapper label {
           font-family: 'Raleway', sans-serif;
           color: #F5F5DC;
+        }
+        /* Fix two-column layout - force single column */
+        .neon-auth-wrapper > div > div {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
         }
         .neon-auth-wrapper input {
           font-family: 'Raleway', sans-serif;
@@ -62,6 +67,7 @@ export function SignInPage() {
           border: 3px solid #3a3a3a;
           color: white;
           padding: 0.75rem 1rem;
+          width: 100%;
           transition: border-color 0.2s;
         }
         .neon-auth-wrapper input:focus {
@@ -82,6 +88,7 @@ export function SignInPage() {
           background: #FFD700;
           color: #0a0a0a;
           padding: 0.75rem 1.5rem;
+          width: 100%;
           transition: transform 0.1s, box-shadow 0.1s;
         }
         .neon-auth-wrapper button:hover {
