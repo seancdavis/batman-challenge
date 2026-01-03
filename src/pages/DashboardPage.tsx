@@ -33,7 +33,9 @@ export function DashboardPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-gray-400">Loading your challenge...</div>
+        <div className="text-batman-cream font-subheading uppercase tracking-wide">
+          Loading your challenge...
+        </div>
       </div>
     )
   }
@@ -42,13 +44,13 @@ export function DashboardPage() {
   if (!challenge) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-4xl font-bold mb-4">
+        <h1 className="text-4xl md:text-5xl font-headline mb-6 tracking-wide">
           Ready to Begin Your
           <br />
-          <span className="text-yellow-500">Batman Challenge?</span>
+          <span className="text-batman-yellow text-shadow-comic">Batman Challenge?</span>
         </h1>
 
-        <p className="text-gray-400 mb-8 max-w-md mx-auto">
+        <p className="text-batman-cream mb-10 max-w-md mx-auto leading-relaxed">
           Start your 30-day fitness journey today. Track your squats, push-ups, and sit-ups as you
           work through progressively harder daily goals.
         </p>
@@ -64,31 +66,35 @@ export function DashboardPage() {
   const overallProgress = Math.round(((currentDay - 1 + (dayComplete ? 1 : 0)) / 30) * 100)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">
-            Day <span className="text-yellow-500">{currentDay}</span>
+          <h1 className="text-4xl font-headline tracking-wide">
+            Day <span className="text-batman-yellow">{currentDay}</span>
           </h1>
-          <p className="text-gray-400">
+          <p className="text-batman-muted font-body">
             Started {new Date(challenge.startDate).toLocaleDateString()}
           </p>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold text-yellow-500">{overallProgress}%</div>
-          <div className="text-gray-400 text-sm">Overall Progress</div>
+          <div className="text-4xl font-headline text-batman-yellow">{overallProgress}%</div>
+          <div className="text-batman-muted text-sm font-subheading uppercase tracking-wide">
+            Overall Progress
+          </div>
         </div>
       </div>
 
       {/* Overall Progress Bar */}
-      <Card>
+      <Card variant="yellow">
         <ProgressBar progress={overallProgress} label="Challenge Progress" />
       </Card>
 
       {/* Today's Workout */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">Today's Workout</h2>
+        <h2 className="text-2xl font-headline tracking-wide mb-6 text-batman-cream">
+          Today's Workout
+        </h2>
 
         {dayGoals ? (
           <div className="space-y-4">
@@ -116,27 +122,33 @@ export function DashboardPage() {
           </div>
         ) : (
           <Card>
-            <p className="text-gray-400">No workout data for this day.</p>
+            <p className="text-batman-muted">No workout data for this day.</p>
           </Card>
         )}
 
         {dayComplete && (
-          <Card className="mt-4 bg-green-900/30 border-green-700">
-            <div className="flex items-center gap-3">
-              <svg
-                className="w-8 h-8 text-green-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
+          <Card variant="success" className="mt-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-batman-success rounded-full flex items-center justify-center">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
               <div>
-                <div className="font-semibold text-green-400">Day {currentDay} Complete!</div>
-                <div className="text-sm text-gray-400">Great work! Come back tomorrow for more.</div>
+                <div className="font-headline text-xl text-batman-success tracking-wide">
+                  Day {currentDay} Complete!
+                </div>
+                <div className="text-batman-cream text-sm">
+                  Great work! Come back tomorrow for more.
+                </div>
               </div>
             </div>
           </Card>

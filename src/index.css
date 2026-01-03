@@ -1,1 +1,524 @@
 @import "tailwindcss";
+
+/* ============================================
+   BATMAN CHALLENGE - Comic Book Theme
+   ============================================ */
+
+/* Tailwind v4 Theme Configuration */
+@theme {
+  /* Colors - Classic Batman Comics Palette */
+  --color-batman-black: #0a0a0a;
+  --color-batman-dark: #1a1a1a;
+  --color-batman-gray: #2a2a2a;
+  --color-batman-steel: #3a3a3a;
+
+  --color-batman-yellow: #FFD700;
+  --color-batman-yellow-bright: #FFEA00;
+  --color-batman-yellow-dark: #B8860B;
+
+  --color-batman-red: #DC143C;
+  --color-batman-red-bright: #FF2D55;
+  --color-batman-red-dark: #8B0000;
+
+  --color-batman-white: #FFFFFF;
+  --color-batman-cream: #F5F5DC;
+
+  --color-batman-success: #32CD32;
+  --color-batman-success-dark: #228B22;
+
+  /* Typography */
+  --font-family-headline: 'Bebas Neue', sans-serif;
+  --font-family-subheading: 'Oswald', sans-serif;
+  --font-family-body: 'Raleway', sans-serif;
+  --font-family-special: 'Monoton', cursive;
+
+  /* Shadows - Comic book style */
+  --shadow-comic: 4px 4px 0 rgba(0, 0, 0, 0.8);
+  --shadow-comic-lg: 6px 6px 0 rgba(0, 0, 0, 0.8);
+  --shadow-comic-yellow: 4px 4px 0 rgba(255, 215, 0, 0.3);
+  --shadow-comic-red: 4px 4px 0 rgba(220, 20, 60, 0.3);
+
+  /* Border radius - Sharp corners for comic aesthetic */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  /* Border widths */
+  --border-comic: 3px;
+  --border-comic-thick: 4px;
+
+  /* Animations */
+  --animate-pulse-yellow: pulse-yellow 2s ease-in-out infinite;
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-body);
+  background-color: var(--color-batman-black);
+  color: var(--color-batman-white);
+  line-height: 1.6;
+}
+
+/* Headlines - Bebas Neue */
+h1, h2, .font-headline {
+  font-family: var(--font-family-headline);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Subheadings - Oswald */
+h3, h4, .font-subheading {
+  font-family: var(--font-family-subheading);
+  font-weight: 600;
+}
+
+/* Body text - Raleway */
+p, span, .font-body {
+  font-family: var(--font-family-body);
+}
+
+/* Special/Retro text - Monoton */
+.font-special {
+  font-family: var(--font-family-special);
+}
+
+/* ============================================
+   Comic Book Effects
+   ============================================ */
+
+/* Halftone pattern background */
+.bg-halftone {
+  background-image:
+    radial-gradient(circle, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* Dense halftone for cards */
+.bg-halftone-dense {
+  background-image:
+    radial-gradient(circle, rgba(255, 215, 0, 0.05) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* Comic panel border */
+.comic-border {
+  border: var(--border-comic) solid var(--color-batman-black);
+  box-shadow: var(--shadow-comic);
+}
+
+/* Comic panel with yellow accent */
+.comic-border-yellow {
+  border: var(--border-comic) solid var(--color-batman-yellow);
+  box-shadow: var(--shadow-comic-yellow);
+}
+
+/* Comic panel with red accent */
+.comic-border-red {
+  border: var(--border-comic) solid var(--color-batman-red);
+  box-shadow: var(--shadow-comic-red);
+}
+
+/* Comic text shadow for headlines */
+.text-shadow-comic {
+  text-shadow:
+    2px 2px 0 var(--color-batman-black),
+    -1px -1px 0 var(--color-batman-black),
+    1px -1px 0 var(--color-batman-black),
+    -1px 1px 0 var(--color-batman-black);
+}
+
+/* Yellow glow effect */
+.glow-yellow {
+  box-shadow:
+    0 0 10px rgba(255, 215, 0, 0.3),
+    0 0 20px rgba(255, 215, 0, 0.2),
+    0 0 30px rgba(255, 215, 0, 0.1);
+}
+
+/* Red glow effect */
+.glow-red {
+  box-shadow:
+    0 0 10px rgba(220, 20, 60, 0.3),
+    0 0 20px rgba(220, 20, 60, 0.2);
+}
+
+/* ============================================
+   Comic Action Words / Callouts
+   ============================================ */
+
+.comic-callout {
+  font-family: var(--font-family-headline);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: var(--color-batman-yellow);
+  text-shadow:
+    3px 3px 0 var(--color-batman-black),
+    -2px -2px 0 var(--color-batman-red);
+  transform: rotate(-3deg);
+  display: inline-block;
+}
+
+/* BAM! POW! style burst */
+.comic-burst {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  background: var(--color-batman-yellow);
+  color: var(--color-batman-black);
+  font-family: var(--font-family-headline);
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+    50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+}
+
+/* ============================================
+   Card Styles
+   ============================================ */
+
+.comic-card {
+  background: var(--color-batman-dark);
+  border: var(--border-comic) solid var(--color-batman-steel);
+  box-shadow: var(--shadow-comic);
+  position: relative;
+  overflow: hidden;
+}
+
+.comic-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 215, 0, 0.02) 1px, transparent 1px);
+  background-size: 6px 6px;
+  pointer-events: none;
+}
+
+/* Card with yellow top accent */
+.comic-card-yellow {
+  border-top: var(--border-comic-thick) solid var(--color-batman-yellow);
+}
+
+/* Card with red top accent */
+.comic-card-red {
+  border-top: var(--border-comic-thick) solid var(--color-batman-red);
+}
+
+/* ============================================
+   Button Styles
+   ============================================ */
+
+.comic-btn {
+  font-family: var(--font-family-subheading);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: var(--border-comic) solid var(--color-batman-black);
+  box-shadow: var(--shadow-comic);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  position: relative;
+}
+
+.comic-btn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.8);
+}
+
+.comic-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+}
+
+/* Primary button - Yellow */
+.comic-btn-primary {
+  background: var(--color-batman-yellow);
+  color: var(--color-batman-black);
+}
+
+.comic-btn-primary:hover:not(:disabled) {
+  background: var(--color-batman-yellow-bright);
+}
+
+/* Secondary button - Dark */
+.comic-btn-secondary {
+  background: var(--color-batman-steel);
+  color: var(--color-batman-white);
+  border-color: var(--color-batman-gray);
+}
+
+.comic-btn-secondary:hover:not(:disabled) {
+  background: var(--color-batman-gray);
+}
+
+/* Ghost button */
+.comic-btn-ghost {
+  background: transparent;
+  color: var(--color-batman-cream);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.comic-btn-ghost:hover:not(:disabled) {
+  background: var(--color-batman-gray);
+  border-color: var(--color-batman-gray);
+  box-shadow: var(--shadow-comic);
+}
+
+/* ============================================
+   Input Styles
+   ============================================ */
+
+.comic-input {
+  font-family: var(--font-family-body);
+  background: var(--color-batman-dark);
+  border: var(--border-comic) solid var(--color-batman-steel);
+  color: var(--color-batman-white);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comic-input:focus {
+  outline: none;
+  border-color: var(--color-batman-yellow);
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+}
+
+.comic-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================
+   Progress Bar Styles
+   ============================================ */
+
+.comic-progress {
+  background: var(--color-batman-gray);
+  border: 2px solid var(--color-batman-steel);
+  overflow: hidden;
+}
+
+.comic-progress-bar {
+  background: linear-gradient(
+    90deg,
+    var(--color-batman-yellow-dark) 0%,
+    var(--color-batman-yellow) 50%,
+    var(--color-batman-yellow-bright) 100%
+  );
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.comic-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+.comic-progress-complete {
+  background: linear-gradient(
+    90deg,
+    var(--color-batman-success-dark) 0%,
+    var(--color-batman-success) 100%
+  );
+}
+
+/* ============================================
+   Calendar Day Styles
+   ============================================ */
+
+.comic-day {
+  font-family: var(--font-family-subheading);
+  font-weight: 600;
+  border: 2px solid var(--color-batman-steel);
+  background: var(--color-batman-gray);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+}
+
+.comic-day:hover {
+  transform: scale(1.05);
+  border-color: var(--color-batman-yellow);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.comic-day-current {
+  background: var(--color-batman-yellow);
+  color: var(--color-batman-black);
+  border-color: var(--color-batman-yellow-bright);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.comic-day-complete {
+  background: var(--color-batman-success);
+  color: var(--color-batman-white);
+  border-color: var(--color-batman-success-dark);
+}
+
+.comic-day-past {
+  background: var(--color-batman-dark);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.comic-day-future {
+  background: var(--color-batman-dark);
+  color: rgba(255, 255, 255, 0.3);
+  border-color: var(--color-batman-dark);
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse-yellow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+/* Text colors */
+.text-batman-yellow {
+  color: var(--color-batman-yellow);
+}
+
+.text-batman-red {
+  color: var(--color-batman-red);
+}
+
+.text-batman-cream {
+  color: var(--color-batman-cream);
+}
+
+.text-batman-muted {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Background colors */
+.bg-batman-black {
+  background-color: var(--color-batman-black);
+}
+
+.bg-batman-dark {
+  background-color: var(--color-batman-dark);
+}
+
+.bg-batman-gray {
+  background-color: var(--color-batman-gray);
+}
+
+.bg-batman-steel {
+  background-color: var(--color-batman-steel);
+}
+
+.bg-batman-yellow {
+  background-color: var(--color-batman-yellow);
+}
+
+.bg-batman-red {
+  background-color: var(--color-batman-red);
+}
+
+/* Border colors */
+.border-batman-steel {
+  border-color: var(--color-batman-steel);
+}
+
+.border-batman-yellow {
+  border-color: var(--color-batman-yellow);
+}
+
+.border-batman-red {
+  border-color: var(--color-batman-red);
+}
+
+/* ============================================
+   Section Dividers
+   ============================================ */
+
+.comic-divider {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-batman-yellow) 20%,
+    var(--color-batman-yellow) 80%,
+    transparent 100%
+  );
+  margin: 2rem 0;
+}
+
+/* ============================================
+   Selection Styles
+   ============================================ */
+
+::selection {
+  background: var(--color-batman-yellow);
+  color: var(--color-batman-black);
+}
+
+/* ============================================
+   Scrollbar Styles
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-batman-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-batman-steel);
+  border: 2px solid var(--color-batman-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-batman-yellow);
+}

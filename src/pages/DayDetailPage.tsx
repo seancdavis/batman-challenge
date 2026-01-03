@@ -27,7 +27,7 @@ export function DayDetailPage() {
   if (challengeLoading || repsLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-gray-400">Loading...</div>
+        <div className="text-batman-cream font-subheading uppercase tracking-wide">Loading...</div>
       </div>
     )
   }
@@ -35,8 +35,8 @@ export function DayDetailPage() {
   if (!challenge) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold mb-4">No Active Challenge</h1>
-        <p className="text-gray-400 mb-6">Start a challenge to track your workouts.</p>
+        <h1 className="text-3xl font-headline mb-6 tracking-wide">No Active Challenge</h1>
+        <p className="text-batman-cream mb-8">Start a challenge to track your workouts.</p>
         <Link to="/dashboard">
           <Button>Go to Dashboard</Button>
         </Link>
@@ -47,7 +47,7 @@ export function DayDetailPage() {
   if (!dayGoals) {
     return (
       <div className="text-center py-16">
-        <h1 className="text-2xl font-bold mb-4">Invalid Day</h1>
+        <h1 className="text-3xl font-headline mb-6 tracking-wide">Invalid Day</h1>
         <Link to="/dashboard">
           <Button>Go to Dashboard</Button>
         </Link>
@@ -56,13 +56,13 @@ export function DayDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link to="/dashboard">
             <Button variant="ghost" size="sm">
-              <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -74,24 +74,34 @@ export function DayDetailPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold">
-              Day <span className="text-yellow-500">{dayNumber}</span>
+            <h1 className="text-4xl font-headline tracking-wide">
+              Day <span className="text-batman-yellow">{dayNumber}</span>
             </h1>
-            {isToday && <span className="text-sm text-yellow-500">Today</span>}
-            {isFuture && <span className="text-sm text-gray-500">Upcoming</span>}
+            {isToday && (
+              <span className="text-sm font-subheading uppercase tracking-wide text-batman-yellow">
+                Today
+              </span>
+            )}
+            {isFuture && (
+              <span className="text-sm font-subheading uppercase tracking-wide text-batman-muted">
+                Upcoming
+              </span>
+            )}
           </div>
         </div>
 
         {isComplete && (
-          <div className="flex items-center gap-2 text-green-400">
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="font-medium">Complete</span>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-batman-success rounded-full flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <span className="font-headline text-batman-success tracking-wide">Complete</span>
           </div>
         )}
       </div>
@@ -124,19 +134,23 @@ export function DayDetailPage() {
       {/* Recent Entries */}
       {entries.length > 0 && (
         <Card>
-          <h3 className="font-semibold mb-4">Today's Log</h3>
-          <div className="space-y-2">
+          <h3 className="font-headline text-xl tracking-wide mb-4 text-batman-cream">
+            Today's Log
+          </h3>
+          <div className="space-y-3">
             {entries.map((entry) => (
               <div
                 key={entry.id}
-                className="flex items-center justify-between py-2 border-b border-gray-700 last:border-0"
+                className="flex items-center justify-between py-3 border-b-2 border-batman-steel last:border-0"
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-yellow-500 font-mono">{entry.reps}</span>
-                  <span className="text-gray-300">{getExerciseLabel(entry.exerciseType)}</span>
+                <div className="flex items-center gap-4">
+                  <span className="text-batman-yellow font-headline text-2xl">{entry.reps}</span>
+                  <span className="text-batman-cream font-subheading uppercase tracking-wide">
+                    {getExerciseLabel(entry.exerciseType)}
+                  </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-gray-500 text-sm">
+                <div className="flex items-center gap-4">
+                  <span className="text-batman-muted text-sm font-body">
                     {new Date(entry.recordedAt).toLocaleTimeString([], {
                       hour: '2-digit',
                       minute: '2-digit',
@@ -144,10 +158,10 @@ export function DayDetailPage() {
                   </span>
                   <button
                     onClick={() => deleteEntry(entry.id)}
-                    className="text-gray-500 hover:text-red-400 transition-colors"
+                    className="text-batman-muted hover:text-batman-red transition-colors p-1"
                     title="Delete entry"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -168,7 +182,7 @@ export function DayDetailPage() {
         {dayNumber > 1 ? (
           <Link to={`/day/${dayNumber - 1}`}>
             <Button variant="secondary">
-              <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -187,7 +201,7 @@ export function DayDetailPage() {
           <Link to={`/day/${dayNumber + 1}`}>
             <Button variant="secondary">
               Day {dayNumber + 1}
-              <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

@@ -4,11 +4,15 @@ import { Button } from '../ui'
 
 export function Header() {
   return (
-    <header className="bg-gray-900 border-b border-gray-800">
+    <header className="bg-batman-dark border-b-4 border-batman-yellow">
       <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-yellow-500">BATMAN</span>
-          <span className="text-gray-400 text-sm">30-Day Challenge</span>
+        <Link to="/" className="flex items-center gap-3 group">
+          <span className="text-3xl font-headline text-batman-yellow text-shadow-comic tracking-wider">
+            BATMAN
+          </span>
+          <span className="text-batman-cream text-sm font-subheading uppercase tracking-wide opacity-80 group-hover:opacity-100 transition-opacity">
+            30-Day Challenge
+          </span>
         </Link>
 
         <nav className="flex items-center gap-4">

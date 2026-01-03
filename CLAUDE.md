@@ -51,3 +51,41 @@ npm run db:studio    # Open Drizzle Studio
 - API endpoints use `x-user-id` header for auth (set by frontend from Neon Auth session)
 - Exercise types: `squats`, `pushups`, `situps`
 - Days are numbered 1-30, odd days have squats+pushups, even days have situps
+
+## Design System
+
+Classic Batman comic book aesthetic with modern edge.
+
+### Typography (Google Fonts loaded in index.html)
+- **Headlines** (`font-headline`): Bebas Neue - bold, uppercase, graphic novel feel
+- **Subheadings** (`font-subheading`): Oswald - structured, contemporary
+- **Body** (`font-body`): Raleway - readable, stylish
+- **Special** (`font-special`): Monoton - retro callouts (use sparingly)
+
+### Color Palette (defined in `src/index.css` @theme)
+- `batman-black` (#0a0a0a) - primary background
+- `batman-dark` (#1a1a1a) - card backgrounds
+- `batman-gray` (#2a2a2a) - secondary surfaces
+- `batman-steel` (#3a3a3a) - borders
+- `batman-yellow` (#FFD700) - primary accent, CTAs
+- `batman-red` (#DC143C) - danger, emphasis
+- `batman-cream` (#F5F5DC) - body text on dark
+- `batman-success` (#32CD32) - completion states
+
+### CSS Classes (comic book effects)
+- `.comic-card` - panel-style card with halftone overlay
+- `.comic-btn` / `.comic-btn-primary` / `.comic-btn-secondary` - buttons with shadow lift
+- `.comic-input` - form inputs with yellow focus
+- `.comic-progress` / `.comic-progress-bar` - animated progress bars
+- `.comic-day` / `.comic-day-current` / `.comic-day-complete` - calendar cells
+- `.comic-divider` - yellow gradient section divider
+- `.bg-halftone` - subtle dot pattern background
+- `.text-shadow-comic` - comic text outline effect
+- `.glow-yellow` / `.glow-red` - glow effects
+
+### Design Principles
+- Sharp corners (no rounded borders) for comic panel feel
+- Thick borders (3px) mimicking comic ink
+- Directional box shadows (4px 4px 0) for depth
+- Uppercase headlines with letter-spacing
+- Yellow as primary action color, red for danger/emphasis

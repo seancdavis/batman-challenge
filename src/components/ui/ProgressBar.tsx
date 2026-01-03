@@ -17,20 +17,18 @@ export function ProgressBar({
   return (
     <div className={className}>
       {(label || showPercentage) && (
-        <div className="flex justify-between items-center mb-1 text-sm">
-          {label && <span className="text-gray-300">{label}</span>}
+        <div className="flex justify-between items-center mb-2 text-sm font-subheading uppercase tracking-wide">
+          {label && <span className="text-batman-cream">{label}</span>}
           {showPercentage && (
-            <span className={isComplete ? 'text-green-400' : 'text-gray-400'}>
+            <span className={`font-bold ${isComplete ? 'text-batman-success' : 'text-batman-yellow'}`}>
               {Math.round(clampedProgress)}%
             </span>
           )}
         </div>
       )}
-      <div className="h-3 bg-gray-700 rounded-full overflow-hidden">
+      <div className="comic-progress h-4">
         <div
-          className={`h-full transition-all duration-300 ${
-            isComplete ? 'bg-green-500' : 'bg-yellow-500'
-          }`}
+          className={`h-full ${isComplete ? 'comic-progress-complete' : 'comic-progress-bar'}`}
           style={{ width: `${clampedProgress}%` }}
         />
       </div>

@@ -8,8 +8,10 @@ interface ChallengeCalendarProps {
 
 export function ChallengeCalendar({ currentDay, completedDays }: ChallengeCalendarProps) {
   return (
-    <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-      <h3 className="text-lg font-semibold mb-4">30-Day Calendar</h3>
+    <div className="comic-card p-6">
+      <h3 className="text-xl font-headline tracking-wide mb-6 text-batman-cream">
+        30-Day Calendar
+      </h3>
 
       <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-2">
         {CHALLENGE_GOALS.map((day) => {
@@ -17,23 +19,20 @@ export function ChallengeCalendar({ currentDay, completedDays }: ChallengeCalend
           const isCurrent = day.day === currentDay
           const isPast = day.day < currentDay
 
+          let dayClass = 'comic-day comic-day-future'
+          if (isCompleted) {
+            dayClass = 'comic-day comic-day-complete'
+          } else if (isCurrent) {
+            dayClass = 'comic-day comic-day-current'
+          } else if (isPast) {
+            dayClass = 'comic-day comic-day-past'
+          }
+
           return (
             <Link
               key={day.day}
               to={`/day/${day.day}`}
-              className={`
-                aspect-square flex items-center justify-center rounded-lg text-sm font-medium transition-all
-                ${
-                  isCompleted
-                    ? 'bg-green-600 text-white'
-                    : isCurrent
-                      ? 'bg-yellow-500 text-gray-900 ring-2 ring-yellow-400 ring-offset-2 ring-offset-gray-800'
-                      : isPast
-                        ? 'bg-gray-700 text-gray-400'
-                        : 'bg-gray-700/50 text-gray-500'
-                }
-                hover:scale-105 hover:ring-2 hover:ring-gray-500
-              `}
+              className={`${dayClass} aspect-square flex items-center justify-center text-sm`}
             >
               {day.day}
             </Link>
@@ -41,18 +40,22 @@ export function ChallengeCalendar({ currentDay, completedDays }: ChallengeCalend
         })}
       </div>
 
-      <div className="flex items-center gap-4 mt-4 text-sm text-gray-400">
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-green-600" />
-          <span>Complete</span>
+      <div className="flex flex-wrap items-center gap-6 mt-6 text-sm">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 comic-day comic-day-complete" />
+          <span className="text-batman-cream font-body">Complete</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-yellow-500" />
-          <span>Today</span>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 comic-day comic-day-current" />
+          <span className="text-batman-cream font-body">Today</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded bg-gray-700" />
-          <span>Incomplete</span>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 comic-day comic-day-past" />
+          <span className="text-batman-cream font-body">Incomplete</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 comic-day comic-day-future" />
+          <span className="text-batman-cream font-body">Upcoming</span>
         </div>
       </div>
     </div>
