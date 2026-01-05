@@ -1,5 +1,11 @@
 # Claude Code Context
 
+## Workflow
+
+- After completing tasks, commit changes with descriptive messages
+- Update this file (CLAUDE.md) when making notable architectural or design system changes
+- Never push to remote unless explicitly asked
+
 This is a 30-day fitness challenge tracker called "Batman Challenge."
 
 ## Architecture
