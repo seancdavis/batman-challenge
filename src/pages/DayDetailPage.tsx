@@ -27,7 +27,10 @@ export function DayDetailPage() {
   if (challengeLoading || repsLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-batman-cream font-subheading uppercase tracking-wide">Loading...</div>
+        <div className="text-center">
+          <div className="inline-block w-10 h-10 border-4 border-batman-yellow/30 border-t-batman-yellow rounded-full animate-spin mb-4" />
+          <div className="text-batman-cream font-subheading uppercase tracking-wide">Loading...</div>
+        </div>
       </div>
     )
   }
@@ -74,16 +77,16 @@ export function DayDetailPage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-4xl font-headline tracking-wide">
+            <h1 className="text-5xl font-headline tracking-wide">
               Day <span className="text-batman-yellow">{dayNumber}</span>
             </h1>
             {isToday && (
-              <span className="text-sm font-subheading uppercase tracking-wide text-batman-yellow">
+              <span className="inline-block mt-1 px-2 py-0.5 bg-batman-yellow/20 text-xs font-subheading uppercase tracking-wider text-batman-yellow">
                 Today
               </span>
             )}
             {isFuture && (
-              <span className="text-sm font-subheading uppercase tracking-wide text-batman-muted">
+              <span className="inline-block mt-1 px-2 py-0.5 bg-batman-steel text-xs font-subheading uppercase tracking-wider text-batman-muted">
                 Upcoming
               </span>
             )}
@@ -91,8 +94,8 @@ export function DayDetailPage() {
         </div>
 
         {isComplete && (
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-batman-success rounded-full flex items-center justify-center">
+          <div className="flex items-center gap-3 px-4 py-2 bg-batman-success/10 border-2 border-batman-success">
+            <div className="w-8 h-8 bg-batman-success flex items-center justify-center flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
@@ -101,7 +104,7 @@ export function DayDetailPage() {
                 />
               </svg>
             </div>
-            <span className="font-headline text-batman-success tracking-wide">Complete</span>
+            <span className="font-headline text-lg text-batman-success tracking-wide">Complete</span>
           </div>
         )}
       </div>
@@ -134,17 +137,22 @@ export function DayDetailPage() {
       {/* Recent Entries */}
       {entries.length > 0 && (
         <Card>
-          <h3 className="font-headline text-xl tracking-wide mb-4 text-batman-cream">
-            Today's Log
+          <h3 className="font-headline text-xl tracking-wide mb-4 text-batman-cream flex items-center gap-3">
+            <span className="w-6 h-1 bg-batman-yellow" />
+            Activity Log
           </h3>
-          <div className="space-y-3">
-            {entries.map((entry) => (
+          <div className="space-y-0">
+            {entries.map((entry, index) => (
               <div
                 key={entry.id}
-                className="flex items-center justify-between py-3 border-b-2 border-batman-steel last:border-0"
+                className={`flex items-center justify-between py-4 ${
+                  index !== entries.length - 1 ? 'border-b-2 border-batman-steel' : ''
+                }`}
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-batman-yellow font-headline text-2xl">{entry.reps}</span>
+                  <span className="text-batman-yellow font-headline text-3xl min-w-[3ch] text-right">
+                    {entry.reps}
+                  </span>
                   <span className="text-batman-cream font-subheading uppercase tracking-wide">
                     {getExerciseLabel(entry.exerciseType)}
                   </span>
@@ -158,7 +166,7 @@ export function DayDetailPage() {
                   </span>
                   <button
                     onClick={() => deleteEntry(entry.id)}
-                    className="text-batman-muted hover:text-batman-red transition-colors p-1"
+                    className="text-batman-muted hover:text-batman-red transition-colors p-2 hover:bg-batman-red/10"
                     title="Delete entry"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,7 +186,7 @@ export function DayDetailPage() {
       )}
 
       {/* Navigation */}
-      <div className="flex justify-between">
+      <div className="flex justify-between pt-4">
         {dayNumber > 1 ? (
           <Link to={`/day/${dayNumber - 1}`}>
             <Button variant="secondary">

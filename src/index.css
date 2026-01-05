@@ -128,7 +128,7 @@ p, span, .font-body {
 /* Comic text shadow for headlines */
 .text-shadow-comic {
   text-shadow:
-    2px 2px 0 var(--color-batman-black),
+    3px 3px 0 var(--color-batman-black),
     -1px -1px 0 var(--color-batman-black),
     1px -1px 0 var(--color-batman-black),
     -1px 1px 0 var(--color-batman-black);
@@ -193,6 +193,7 @@ p, span, .font-body {
   box-shadow: var(--shadow-comic);
   position: relative;
   overflow: hidden;
+  transition: border-color 0.2s ease;
 }
 
 .comic-card::before {
@@ -229,8 +230,24 @@ p, span, .font-body {
   letter-spacing: 0.05em;
   border: var(--border-comic) solid var(--color-batman-black);
   box-shadow: var(--shadow-comic);
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
   position: relative;
+  overflow: hidden;
+}
+
+.comic-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.4s ease;
+}
+
+.comic-btn:hover:not(:disabled)::before {
+  left: 100%;
 }
 
 .comic-btn:hover:not(:disabled) {
@@ -245,12 +262,12 @@ p, span, .font-body {
 
 /* Primary button - Yellow */
 .comic-btn-primary {
-  background: var(--color-batman-yellow);
+  background: linear-gradient(180deg, var(--color-batman-yellow) 0%, #E5C100 100%);
   color: var(--color-batman-black);
 }
 
 .comic-btn-primary:hover:not(:disabled) {
-  background: var(--color-batman-yellow-bright);
+  background: linear-gradient(180deg, var(--color-batman-yellow-bright) 0%, var(--color-batman-yellow) 100%);
 }
 
 /* Secondary button - Dark */
@@ -262,6 +279,7 @@ p, span, .font-body {
 
 .comic-btn-secondary:hover:not(:disabled) {
   background: var(--color-batman-gray);
+  border-color: var(--color-batman-yellow);
 }
 
 /* Ghost button */
@@ -284,7 +302,7 @@ p, span, .font-body {
 
 .comic-input {
   font-family: var(--font-family-body);
-  background: var(--color-batman-dark);
+  background: var(--color-batman-black);
   border: var(--border-comic) solid var(--color-batman-steel);
   color: var(--color-batman-white);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -293,11 +311,13 @@ p, span, .font-body {
 .comic-input:focus {
   outline: none;
   border-color: var(--color-batman-yellow);
-  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+  box-shadow:
+    0 0 0 3px rgba(255, 215, 0, 0.15),
+    0 0 20px rgba(255, 215, 0, 0.1);
 }
 
 .comic-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.35);
 }
 
 /* ============================================
@@ -317,11 +337,9 @@ p, span, .font-body {
     var(--color-batman-yellow) 50%,
     var(--color-batman-yellow-bright) 100%
   );
-  transition: width 0.3s ease;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
-
-/* Shimmer effect removed for cleaner look */
 
 .comic-progress-complete {
   background: linear-gradient(
@@ -340,37 +358,44 @@ p, span, .font-body {
   font-weight: 600;
   border: 2px solid var(--color-batman-steel);
   background: var(--color-batman-gray);
-  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+  transition: all 0.15s ease;
 }
 
 .comic-day:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
   border-color: var(--color-batman-yellow);
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  z-index: 10;
 }
 
 .comic-day-current {
-  background: var(--color-batman-yellow);
+  background: linear-gradient(135deg, var(--color-batman-yellow) 0%, #E5C100 100%);
   color: var(--color-batman-black);
   border-color: var(--color-batman-yellow-bright);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  animation: pulse-current 2s ease-in-out infinite;
 }
 
 .comic-day-complete {
-  background: var(--color-batman-success);
+  background: linear-gradient(135deg, var(--color-batman-success) 0%, #28a428 100%);
   color: var(--color-batman-white);
   border-color: var(--color-batman-success-dark);
 }
 
 .comic-day-past {
   background: var(--color-batman-dark);
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
+  border-color: var(--color-batman-dark);
 }
 
 .comic-day-future {
   background: var(--color-batman-dark);
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.25);
   border-color: var(--color-batman-dark);
+}
+
+.comic-day-future:hover {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 /* ============================================
@@ -391,7 +416,16 @@ p, span, .font-body {
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
   }
   50% {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+  }
+}
+
+@keyframes pulse-current {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
   }
 }
 
@@ -401,6 +435,28 @@ p, span, .font-body {
   }
   50% {
     transform: translateY(-5px);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -422,7 +478,7 @@ p, span, .font-body {
 }
 
 .text-batman-muted {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 /* Background colors */
@@ -450,6 +506,10 @@ p, span, .font-body {
   background-color: var(--color-batman-red);
 }
 
+.bg-batman-success {
+  background-color: var(--color-batman-success);
+}
+
 /* Border colors */
 .border-batman-steel {
   border-color: var(--color-batman-steel);
@@ -461,6 +521,10 @@ p, span, .font-body {
 
 .border-batman-red {
   border-color: var(--color-batman-red);
+}
+
+.border-batman-success {
+  border-color: var(--color-batman-success);
 }
 
 /* ============================================
@@ -509,3 +573,28 @@ p, span, .font-body {
   background: var(--color-batman-yellow);
 }
 
+/* ============================================
+   Focus Styles for Accessibility
+   ============================================ */
+
+:focus-visible {
+  outline: 2px solid var(--color-batman-yellow);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Loading Spinner
+   ============================================ */
+
+.spinner {
+  border: 3px solid var(--color-batman-steel);
+  border-top-color: var(--color-batman-yellow);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

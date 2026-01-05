@@ -89,3 +89,7 @@ Classic Batman comic book aesthetic with modern edge.
 - Directional box shadows (4px 4px 0) for depth
 - Uppercase headlines with letter-spacing
 - Yellow as primary action color, red for danger/emphasis
+- Bat signal SVG (`/bat-light.svg`) used as hero branding element
+- Section headers use yellow accent bars (e.g., `<span className="w-6 h-1 bg-batman-yellow" />`)
+- Buttons have shimmer effect on hover
+- Calendar days have gradient backgrounds and pulse animation on current day

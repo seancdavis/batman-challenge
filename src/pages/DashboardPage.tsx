@@ -39,8 +39,11 @@ export function DashboardPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-batman-cream font-subheading uppercase tracking-wide">
-          Loading your challenge...
+        <div className="text-center">
+          <div className="inline-block w-12 h-12 border-4 border-batman-yellow/30 border-t-batman-yellow rounded-full animate-spin mb-4" />
+          <div className="text-batman-cream font-subheading uppercase tracking-wide">
+            Loading your challenge...
+          </div>
         </div>
       </div>
     )
@@ -49,7 +52,17 @@ export function DashboardPage() {
   // No challenge yet - show start button
   if (!challenge) {
     return (
-      <div className="text-center py-16">
+      <div className="text-center py-16 animate-fade-in">
+        {/* Bat icon */}
+        <div className="mb-8 relative inline-block">
+          <div className="absolute inset-0 blur-2xl bg-batman-yellow/20 scale-150" />
+          <img
+            src="/bat-light.svg"
+            alt=""
+            className="w-24 h-auto relative z-10 opacity-80"
+          />
+        </div>
+
         <h1 className="text-4xl md:text-5xl font-headline mb-6 tracking-wide">
           Ready to Begin Your
           <br />
@@ -64,6 +77,16 @@ export function DashboardPage() {
         <Button size="lg" onClick={handleStartChallenge} disabled={isStarting}>
           {isStarting ? 'Starting...' : 'Start Challenge'}
         </Button>
+
+        <style>{`
+          @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fade-in {
+            animation: fade-in 0.5s ease-out;
+          }
+        `}</style>
       </div>
     )
   }
@@ -74,31 +97,42 @@ export function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-4xl font-headline tracking-wide">
+          <h1 className="text-5xl font-headline tracking-wide mb-1">
             Day <span className="text-batman-yellow">{currentDay}</span>
           </h1>
-          <p className="text-batman-muted font-body">
-            Started {new Date(challenge.startDate).toLocaleDateString()}
+          <p className="text-batman-muted font-body text-sm">
+            Started {new Date(challenge.startDate).toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric'
+            })}
           </p>
         </div>
         <div className="text-right">
-          <div className="text-4xl font-headline text-batman-yellow">{completedDays.length}/30</div>
-          <div className="text-batman-muted text-sm font-subheading uppercase tracking-wide">
-            Days Complete
+          <div className="text-5xl font-headline text-batman-yellow leading-none">{completedDays.length}</div>
+          <div className="text-batman-muted text-xs font-subheading uppercase tracking-wider mt-1">
+            of 30 Days
           </div>
         </div>
       </div>
 
       {/* Overall Progress Bar */}
       <Card variant="yellow">
-        <ProgressBar progress={overallProgress} label="Challenge Progress" />
+        <div className="flex items-center justify-between mb-3">
+          <span className="font-subheading uppercase tracking-wide text-sm text-batman-cream">
+            Challenge Progress
+          </span>
+          <span className="font-headline text-2xl text-batman-yellow">{overallProgress}%</span>
+        </div>
+        <ProgressBar progress={overallProgress} showPercentage={false} />
       </Card>
 
       {/* Today's Workout */}
       <div>
-        <h2 className="text-2xl font-headline tracking-wide mb-6 text-batman-cream">
+        <h2 className="text-2xl font-headline tracking-wide mb-6 text-batman-cream flex items-center gap-3">
+          <span className="w-8 h-1 bg-batman-yellow" />
           Today's Workout
         </h2>
 
@@ -133,11 +167,14 @@ export function DashboardPage() {
         )}
 
         {dayComplete && (
-          <Card variant="success" className="mt-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-batman-success rounded-full flex items-center justify-center">
+          <div className="mt-6 comic-card border-batman-success p-6 relative overflow-hidden">
+            {/* Success glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(50,205,50,0.1)_0%,_transparent_70%)]" />
+
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="w-14 h-14 bg-batman-success flex items-center justify-center flex-shrink-0">
                 <svg
-                  className="w-6 h-6 text-white"
+                  className="w-8 h-8 text-white"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -149,7 +186,7 @@ export function DashboardPage() {
                 </svg>
               </div>
               <div>
-                <div className="font-headline text-xl text-batman-success tracking-wide">
+                <div className="font-headline text-2xl text-batman-success tracking-wide">
                   Day {currentDay} Complete!
                 </div>
                 <div className="text-batman-cream text-sm">
@@ -157,7 +194,7 @@ export function DashboardPage() {
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
         )}
       </div>
 
