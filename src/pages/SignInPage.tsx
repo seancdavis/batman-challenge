@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { AuthView } from '@neondatabase/neon-js/auth/react/ui'
 import { useAuth } from '../hooks/useAuth'
 
@@ -26,6 +26,17 @@ export function SignInPage() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-12">
+        {/* Back to Home Link */}
+        <Link
+          to="/"
+          className="absolute top-6 left-6 flex items-center gap-2 text-batman-cream hover:text-batman-yellow transition-colors font-subheading uppercase tracking-wide text-sm"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Home
+        </Link>
+
         {/* Bat Signal Logo */}
         <div className="mb-8 relative">
           <div className="absolute inset-0 blur-3xl bg-batman-yellow/20 scale-150" />
@@ -80,6 +91,7 @@ export function SignInPage() {
         /* Neon Auth Wrapper Styles */
         .neon-auth-wrapper {
           color: white;
+          font-size: 1rem;
         }
         .neon-auth-wrapper > div {
           background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
@@ -98,12 +110,14 @@ export function SignInPage() {
           font-weight: 400;
           letter-spacing: 0.1em;
           text-transform: uppercase;
+          font-size: 1.75rem;
         }
         .neon-auth-wrapper p,
         .neon-auth-wrapper span,
         .neon-auth-wrapper label {
           font-family: 'Raleway', sans-serif;
           color: #F5F5DC;
+          font-size: 0.95rem;
         }
         /* Fix two-column layout - force single column */
         .neon-auth-wrapper > div > div {
@@ -113,6 +127,7 @@ export function SignInPage() {
         }
         .neon-auth-wrapper input {
           font-family: 'Raleway', sans-serif;
+          font-size: 1rem;
           background: #0a0a0a;
           border: 2px solid #3a3a3a;
           color: white;
@@ -133,6 +148,7 @@ export function SignInPage() {
         .neon-auth-wrapper button {
           font-family: 'Oswald', sans-serif;
           font-weight: 600;
+          font-size: 1rem;
           text-transform: uppercase;
           letter-spacing: 0.1em;
           border: 3px solid #0a0a0a;
@@ -172,6 +188,7 @@ export function SignInPage() {
           text-decoration: none;
           transition: all 0.2s ease;
           position: relative;
+          font-size: 0.95rem;
         }
         .neon-auth-wrapper a::after {
           content: '';
@@ -191,17 +208,31 @@ export function SignInPage() {
           width: 100%;
         }
 
-        /* Social/OAuth buttons styling */
+        /* Google/OAuth button styling */
         .neon-auth-wrapper button[type="button"],
         .neon-auth-wrapper form > div > button {
           background: #1a1a1a;
           color: #F5F5DC;
           border-color: #3a3a3a;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.625rem;
+          white-space: nowrap;
         }
         .neon-auth-wrapper button[type="button"]:hover,
         .neon-auth-wrapper form > div > button:hover {
           background: #2a2a2a;
           border-color: #FFD700;
+        }
+        /* Google icon - make smaller and black */
+        .neon-auth-wrapper button svg,
+        .neon-auth-wrapper button img {
+          width: 18px !important;
+          height: 18px !important;
+          min-width: 18px !important;
+          flex-shrink: 0;
+          filter: brightness(0);
         }
 
         /* Divider styling */

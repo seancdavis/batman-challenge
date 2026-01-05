@@ -30,9 +30,14 @@ export function HomePage() {
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-batman-yellow/5 to-transparent transform skew-x-12 origin-top-right" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 text-center">
-          {/* Bat Signal with glow */}
-          <div className="mb-8 relative inline-block animate-hero-float">
-            <div className="absolute inset-0 blur-3xl bg-batman-yellow/30 scale-150 animate-pulse-slow" />
+          {/* Bat Signal with animated light sweep */}
+          <div className="mb-8 relative inline-block">
+            {/* Base glow */}
+            <div className="absolute inset-0 blur-3xl bg-batman-yellow/25 scale-150" />
+            {/* Rotating spotlight effect */}
+            <div className="absolute inset-0 scale-[2] animate-spotlight">
+              <div className="absolute inset-0 bg-[conic-gradient(from_0deg,_transparent_0deg,_rgba(255,215,0,0.4)_30deg,_transparent_60deg)] blur-2xl" />
+            </div>
             <img
               src="/bat-light.svg"
               alt="Batman Signal"
@@ -230,9 +235,9 @@ export function HomePage() {
 
       {/* Inline styles for hero animations */}
       <style>{`
-        @keyframes hero-float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
+        @keyframes spotlight {
+          from { transform: scale(2) rotate(0deg); }
+          to { transform: scale(2) rotate(360deg); }
         }
         @keyframes hero-title {
           from { opacity: 0; transform: translateY(20px); }
@@ -242,12 +247,8 @@ export function HomePage() {
           from { opacity: 0; width: 0; }
           to { opacity: 1; width: 8rem; }
         }
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.5; }
-        }
-        .animate-hero-float {
-          animation: hero-float 4s ease-in-out infinite;
+        .animate-spotlight {
+          animation: spotlight 8s linear infinite;
         }
         .animate-hero-title {
           animation: hero-title 0.8s ease-out both;
@@ -260,9 +261,6 @@ export function HomePage() {
         }
         .animate-hero-button {
           animation: hero-title 0.8s ease-out 0.4s both;
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 3s ease-in-out infinite;
         }
       `}</style>
     </div>
