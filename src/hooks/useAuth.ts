@@ -54,13 +54,8 @@ export function useAuth(): AuthState {
     setSession(null)
     setUser(null)
 
-    try {
-      await authClient.signOut()
-    } catch (err) {
-      console.error('Sign out failed:', err)
-    }
-
-    // Force redirect to auth server's sign-out endpoint for full session clear
+    // Redirect directly to auth server's sign-out endpoint
+    // This avoids CORS issues with the client-side signOut() call
     const authUrl = import.meta.env.VITE_NEON_AUTH_URL
     if (authUrl) {
       const callbackUrl = encodeURIComponent(window.location.origin)
