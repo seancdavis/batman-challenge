@@ -50,19 +50,19 @@ export function useAuth(): AuthState {
   }, [])
 
   const signOut = async () => {
-    // Clear local state first
+    try {
+      // POST to sign-out endpoint via auth client
+      await authClient.signOut()
+    } catch (err) {
+      console.error('Sign out error:', err)
+    }
+
+    // Clear local state
     setSession(null)
     setUser(null)
 
-    // Redirect directly to auth server's sign-out endpoint
-    // This avoids CORS issues with the client-side signOut() call
-    const authUrl = import.meta.env.VITE_NEON_AUTH_URL
-    if (authUrl) {
-      const callbackUrl = encodeURIComponent(window.location.origin)
-      window.location.href = `${authUrl}/api/auth/sign-out?callbackURL=${callbackUrl}`
-    } else {
-      window.location.href = '/'
-    }
+    // Hard redirect to clear any cached state
+    window.location.href = '/'
   }
 
   return {
