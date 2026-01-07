@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '../../hooks/useAuth'
-import { useNavigate } from 'react-router-dom'
 
 export function UserMenu() {
   const { user, signOut } = useAuth()
-  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -22,7 +20,9 @@ export function UserMenu() {
   const handleSignOut = async () => {
     setIsOpen(false)
     await signOut()
-    navigate('/')
+    // Use hard redirect instead of React Router navigation
+    // This ensures cookies and session state are fully cleared
+    window.location.href = '/'
   }
 
   if (!user) return null
