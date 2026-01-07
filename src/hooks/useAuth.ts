@@ -50,12 +50,23 @@ export function useAuth(): AuthState {
   }, [])
 
   const signOut = async () => {
+    // Clear local state first
+    setSession(null)
+    setUser(null)
+
     try {
       await authClient.signOut()
-      setSession(null)
-      setUser(null)
     } catch (err) {
       console.error('Sign out failed:', err)
+    }
+
+    // Force redirect to auth server's sign-out endpoint for full session clear
+    const authUrl = import.meta.env.VITE_NEON_AUTH_URL
+    if (authUrl) {
+      const callbackUrl = encodeURIComponent(window.location.origin)
+      window.location.href = `${authUrl}/api/auth/sign-out?callbackURL=${callbackUrl}`
+    } else {
+      window.location.href = '/'
     }
   }
 
