@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
+import { Calendar } from 'lucide-react'
 import { Button, Card } from '../components/ui'
 import { ExerciseInput } from '../components/challenge/ExerciseInput'
 import { useChallenge } from '../hooks/useChallenge'
@@ -23,6 +24,14 @@ export function DayDetailPage() {
   const dayGoals = getDayGoals(dayNumber)
   const isToday = dayNumber === currentDay
   const isFuture = dayNumber > currentDay
+
+  // Calculate the actual date for this day
+  const getDateForDay = (startDate: string, day: number): string => {
+    const start = new Date(startDate)
+    const date = new Date(start)
+    date.setDate(start.getDate() + day - 1)
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  }
 
   if (challengeLoading || repsLoading) {
     return (
@@ -80,16 +89,26 @@ export function DayDetailPage() {
             <h1 className="text-5xl font-headline tracking-wide">
               Day <span className="text-batman-yellow">{dayNumber}</span>
             </h1>
-            {isToday && (
-              <span className="inline-block mt-1 px-2 py-0.5 bg-batman-yellow/20 text-xs font-subheading uppercase tracking-wider text-batman-yellow">
-                Today
-              </span>
-            )}
-            {isFuture && (
-              <span className="inline-block mt-1 px-2 py-0.5 bg-batman-steel text-xs font-subheading uppercase tracking-wider text-batman-muted">
-                Upcoming
-              </span>
-            )}
+            <div className="flex items-center gap-2 mt-1">
+              {/* Date badge - always shown */}
+              {challenge && (
+                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-batman-steel/50 text-xs font-subheading uppercase tracking-wider text-batman-cream">
+                  <Calendar className="w-3 h-3" />
+                  {getDateForDay(challenge.startDate, dayNumber)}
+                </span>
+              )}
+              {/* Status badge */}
+              {isToday && (
+                <span className="inline-block px-2 py-0.5 bg-batman-yellow/20 text-xs font-subheading uppercase tracking-wider text-batman-yellow">
+                  Today
+                </span>
+              )}
+              {isFuture && (
+                <span className="inline-block px-2 py-0.5 bg-batman-steel text-xs font-subheading uppercase tracking-wider text-batman-muted">
+                  Upcoming
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
