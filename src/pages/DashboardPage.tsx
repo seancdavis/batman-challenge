@@ -199,7 +199,7 @@ export function DashboardPage() {
       </div>
 
       {/* Calendar */}
-      <ChallengeCalendar currentDay={currentDay} completedDays={completedDays} />
+      <ChallengeCalendar currentDay={currentDay} completedDays={completedDays} startDate={challenge.startDate} />
     </div>
   )
 }
