@@ -51,17 +51,12 @@ export function useAuth(): AuthState {
 
   const signOut = async () => {
     try {
-      // POST to sign-out endpoint via auth client
       await authClient.signOut()
     } catch (err) {
       console.error('Sign out error:', err)
     }
 
-    // Clear local state
-    setSession(null)
-    setUser(null)
-
-    // Hard redirect to clear any cached state
+    // Redirect immediately - page reload clears all state
     window.location.href = '/'
   }
 
