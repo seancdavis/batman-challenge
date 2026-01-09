@@ -4,7 +4,7 @@ import { AuthView } from '@neondatabase/neon-js/auth/react/ui'
 import { useAuth } from '../hooks/useAuth'
 
 export function SignInPage() {
-  const { session } = useAuth()
+  const { session, refetch } = useAuth()
   const navigate = useNavigate()
 
   // Redirect to dashboard if already signed in
@@ -14,15 +14,23 @@ export function SignInPage() {
     }
   }, [session, navigate])
 
+  // Poll for session after OAuth callback returns
+  useEffect(() => {
+    if (session) return
+
+    const interval = setInterval(() => {
+      refetch()
+    }, 500)
+
+    return () => clearInterval(interval)
+  }, [session, refetch])
+
   return (
     <div className="min-h-screen bg-batman-black relative overflow-hidden">
       {/* Dramatic background with spotlight effect */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,215,0,0.15)_0%,_transparent_50%)]" />
       <div className="absolute inset-0 bg-halftone" />
 
-      {/* Animated searchlight beams */}
-      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-batman-yellow/20 via-transparent to-transparent animate-pulse" />
-      <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-batman-yellow/10 via-transparent to-transparent animate-pulse delay-500" />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-12">
@@ -83,9 +91,6 @@ export function SignInPage() {
         }
         .animate-slide-up {
           animation: slide-up 0.6s ease-out 0.2s both;
-        }
-        .delay-500 {
-          animation-delay: 0.5s;
         }
 
         /* Neon Auth Wrapper Styles */
