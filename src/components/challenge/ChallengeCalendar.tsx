@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Check, Zap, Target } from 'lucide-react'
+import { Check, Target } from 'lucide-react'
 import { CHALLENGE_GOALS } from '../../lib/challengeData'
 
 interface ChallengeCalendarProps {
@@ -54,7 +54,7 @@ export function ChallengeCalendar({ currentDay, completedDays, startDate }: Chal
                 ${isCompleted
                   ? 'bg-gradient-to-br from-batman-success to-batman-success-dark border-batman-success text-white shadow-[0_0_20px_rgba(50,205,50,0.3)]'
                   : isCurrent
-                    ? 'bg-gradient-to-br from-batman-yellow to-batman-yellow-dark border-batman-yellow text-batman-black shadow-[0_0_25px_rgba(255,215,0,0.5)] animate-pulse-current'
+                    ? 'bg-gradient-to-br from-batman-yellow to-batman-yellow-dark border-batman-yellow-bright text-batman-black shadow-[0_0_25px_rgba(255,215,0,0.5)] animate-pulse-current'
                     : isPast
                       ? 'bg-batman-dark border-batman-dark text-batman-muted hover:border-batman-red hover:text-batman-red'
                       : 'bg-batman-dark border-batman-steel text-batman-muted hover:border-batman-yellow hover:text-batman-cream'
@@ -62,37 +62,23 @@ export function ChallengeCalendar({ currentDay, completedDays, startDate }: Chal
                 hover:scale-105 hover:z-10
               `}
             >
-              {/* Completed overlay with icon */}
-              {isCompleted && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Check
-                    className="w-6 h-6 md:w-8 md:h-8 text-white/90 stroke-[3]"
-                    strokeLinecap="square"
-                  />
-                </div>
-              )}
-
-              {/* Current day indicator */}
-              {isCurrent && (
-                <Zap className="absolute -top-1 -right-1 w-4 h-4 text-batman-black fill-batman-black" />
-              )}
-
-              {/* Day number */}
-              <span className={`
-                font-headline text-lg md:text-xl leading-none
-                ${isCompleted ? 'opacity-0' : ''}
-              `}>
-                {day.day}
+              {/* Day number or check icon - always centered */}
+              <span className="font-headline text-lg md:text-xl leading-none flex items-center justify-center">
+                {isCompleted ? (
+                  <Check className="w-5 h-5 md:w-6 md:h-6 stroke-[3]" />
+                ) : (
+                  day.day
+                )}
               </span>
 
-              {/* Date label */}
+              {/* Date label - always in same position */}
               <span className={`
                 text-[9px] md:text-[10px] font-body mt-0.5 leading-none
                 ${isCompleted
-                  ? 'absolute bottom-1 text-white/70 text-[8px]'
+                  ? 'text-white/70'
                   : isCurrent
                     ? 'text-batman-black/60'
-                    : 'text-inherit opacity-50'
+                    : 'opacity-50'
                 }
               `}>
                 {formatDate(dayDate)}
@@ -111,9 +97,7 @@ export function ChallengeCalendar({ currentDay, completedDays, startDate }: Chal
           <span className="text-batman-cream font-body text-xs">Complete</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 bg-gradient-to-br from-batman-yellow to-batman-yellow-dark border-2 border-batman-yellow relative">
-            <Zap className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 text-batman-black fill-batman-black" />
-          </div>
+          <div className="w-5 h-5 bg-gradient-to-br from-batman-yellow to-batman-yellow-dark border-2 border-batman-yellow" />
           <span className="text-batman-cream font-body text-xs">Today</span>
         </div>
         <div className="flex items-center gap-2">
