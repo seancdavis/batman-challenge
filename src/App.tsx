@@ -10,29 +10,32 @@ import { SignInPage } from './pages/SignInPage'
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { session, isLoading, refetch } = useAuth()
-  const [isProcessingCallback, setIsProcessingCallback] = useState(false)
+  const [isProcessingCallback, setIsProcessingCallback] = useState(() => {
+    // Initialize to true if we have a verifier in URL (prevents flash redirect)
+    return new URLSearchParams(window.location.search).has('neon_auth_session_verifier')
+  })
 
   // Check if we're returning from OAuth callback (has session verifier in URL)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    const hasSessionVerifier = params.has('neon_auth_session_verifier')
+    const hasVerifier = params.has('neon_auth_session_verifier')
 
-    if (hasSessionVerifier && !session && !isLoading) {
-      // We have a session verifier but no session yet - wait and retry
-      setIsProcessingCallback(true)
-      console.log('OAuth callback detected, waiting for session...')
-
-      // Give the auth provider time to process, then refetch
-      const timer = setTimeout(async () => {
-        await refetch()
-        // Clean up the URL after processing
+    if (hasVerifier) {
+      console.log('OAuth callback detected, verifier in URL, calling refetch...')
+      // The SDK's getSession automatically includes the verifier from the URL
+      // We just need to call refetch while the verifier is still in the URL
+      refetch().then(() => {
+        console.log('Refetch complete, cleaning URL')
+        // Clean up the URL after the session is fetched
         window.history.replaceState({}, '', window.location.pathname)
         setIsProcessingCallback(false)
-      }, 1000)
-
-      return () => clearTimeout(timer)
+      }).catch(err => {
+        console.error('Refetch failed:', err)
+        window.history.replaceState({}, '', window.location.pathname)
+        setIsProcessingCallback(false)
+      })
     }
-  }, [session, isLoading, refetch])
+  }, [refetch])
 
   console.log('ProtectedRoute: isLoading =', isLoading, ', session =', session, ', isProcessingCallback =', isProcessingCallback)
 
