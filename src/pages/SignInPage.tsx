@@ -14,13 +14,25 @@ export function SignInPage() {
     }
   }, [session, navigate])
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     // Use absolute URL for OAuth callback - relative URLs can fail on mobile browsers
     const callbackURL = `${window.location.origin}/dashboard`
-    authClient.signIn.social({
-      provider: 'google',
-      callbackURL,
-    })
+    console.log('Starting OAuth with callbackURL:', callbackURL)
+    try {
+      const result = await authClient.signIn.social({
+        provider: 'google',
+        callbackURL,
+      })
+      console.log('OAuth result:', result)
+      // If there's an error in the result, log it
+      if (result?.error) {
+        console.error('OAuth error:', result.error)
+        alert(`Sign in error: ${JSON.stringify(result.error)}`)
+      }
+    } catch (err) {
+      console.error('Sign in failed:', err)
+      alert(`Sign in failed: ${err}`)
+    }
   }
 
   return (
