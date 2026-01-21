@@ -15,9 +15,11 @@ export function SignInPage() {
   }, [session, navigate])
 
   const handleGoogleSignIn = () => {
+    // Use absolute URL for OAuth callback - relative URLs can fail on mobile browsers
+    const callbackURL = `${window.location.origin}/dashboard`
     authClient.signIn.social({
       provider: 'google',
-      callbackURL: '/dashboard',
+      callbackURL,
     })
   }
 
