@@ -10,6 +10,8 @@ import { SignInPage } from './pages/SignInPage'
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { session, isLoading } = useAuth()
 
+  console.log('ProtectedRoute: isLoading =', isLoading, ', session =', session)
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
@@ -19,6 +21,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!session) {
+    console.log('ProtectedRoute: no session, redirecting to /sign-in')
     return <Navigate to="/sign-in" replace />
   }
 
