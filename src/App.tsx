@@ -9,40 +9,44 @@ import { SignInPage } from './pages/SignInPage'
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { session, isLoading } = useAuth()
-  const [debugInfo, setDebugInfo] = useState<string[]>([])
+  const { session, isLoading, refetch } = useAuth()
+  const [isProcessingCallback, setIsProcessingCallback] = useState(false)
 
+  // Check if we're returning from OAuth callback (has session verifier in URL)
   useEffect(() => {
-    setDebugInfo(prev => [...prev, `isLoading: ${isLoading}, hasSession: ${!!session}`])
-  }, [isLoading, session])
+    const params = new URLSearchParams(window.location.search)
+    const hasSessionVerifier = params.has('neon_auth_session_verifier')
 
-  console.log('ProtectedRoute: isLoading =', isLoading, ', session =', session)
+    if (hasSessionVerifier && !session && !isLoading) {
+      // We have a session verifier but no session yet - wait and retry
+      setIsProcessingCallback(true)
+      console.log('OAuth callback detected, waiting for session...')
 
-  // Show debug info on screen for mobile testing
-  const debugOverlay = (
-    <div className="fixed bottom-0 left-0 right-0 bg-black/90 text-green-400 text-xs p-2 font-mono max-h-32 overflow-auto z-50">
-      <div>DEBUG: {debugInfo.slice(-5).join(' → ')}</div>
-      <div>URL: {window.location.pathname}</div>
-    </div>
-  )
+      // Give the auth provider time to process, then refetch
+      const timer = setTimeout(async () => {
+        await refetch()
+        // Clean up the URL after processing
+        window.history.replaceState({}, '', window.location.pathname)
+        setIsProcessingCallback(false)
+      }, 1000)
 
-  if (isLoading) {
+      return () => clearTimeout(timer)
+    }
+  }, [session, isLoading, refetch])
+
+  console.log('ProtectedRoute: isLoading =', isLoading, ', session =', session, ', isProcessingCallback =', isProcessingCallback)
+
+  if (isLoading || isProcessingCallback) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-gray-400">Loading...</div>
-        {debugOverlay}
       </div>
     )
   }
 
   if (!session) {
     console.log('ProtectedRoute: no session, redirecting to /sign-in')
-    return (
-      <>
-        {debugOverlay}
-        <Navigate to="/sign-in" replace />
-      </>
-    )
+    return <Navigate to="/sign-in" replace />
   }
 
   return <>{children}</>
