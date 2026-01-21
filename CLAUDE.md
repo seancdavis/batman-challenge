@@ -2,6 +2,13 @@
 
 ## Workflow
 
+### For New Improvements/Fixes
+1. Create a feature branch (e.g., `fix-oauth-mobile`, `improve-calendar-view`)
+2. Make changes and commit with descriptive messages
+3. Push branch and open a PR to trigger Netlify deploy preview
+4. Test on deploy preview before merging to main
+
+### General
 - After completing tasks, commit changes with descriptive messages
 - Update this file (CLAUDE.md) when making notable architectural or design system changes
 - Never push to remote unless explicitly asked
