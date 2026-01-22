@@ -22,6 +22,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
     if (hasVerifier) {
       console.log('OAuth callback detected, verifier in URL, calling refetch...')
+      console.log('Cookies available:', document.cookie)
       // The SDK's getSession automatically includes the verifier from the URL
       // We just need to call refetch while the verifier is still in the URL
       refetch().then(() => {
