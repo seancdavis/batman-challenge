@@ -29,20 +29,15 @@ export function useAuth(): AuthState {
 
   const fetchSession = async () => {
     try {
-      console.log('fetchSession: calling getSession...')
       const result = await authClient.getSession()
-      console.log('fetchSession: result =', JSON.stringify(result, null, 2))
       if (result.data?.session && result.data?.user) {
-        console.log('fetchSession: session found, setting user')
         setSession(result.data.session as unknown as Session)
         setUser(result.data.user as unknown as User)
       } else {
-        console.log('fetchSession: no session found')
         setSession(null)
         setUser(null)
       }
-    } catch (err) {
-      console.error('fetchSession: error', err)
+    } catch {
       setSession(null)
       setUser(null)
     } finally {

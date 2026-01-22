@@ -21,24 +21,18 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const hasVerifier = params.has('neon_auth_session_verifier')
 
     if (hasVerifier) {
-      console.log('OAuth callback detected, verifier in URL, calling refetch...')
-      console.log('Cookies available:', document.cookie)
       // The SDK's getSession automatically includes the verifier from the URL
       // We just need to call refetch while the verifier is still in the URL
       refetch().then(() => {
-        console.log('Refetch complete, cleaning URL')
         // Clean up the URL after the session is fetched
         window.history.replaceState({}, '', window.location.pathname)
         setIsProcessingCallback(false)
-      }).catch(err => {
-        console.error('Refetch failed:', err)
+      }).catch(() => {
         window.history.replaceState({}, '', window.location.pathname)
         setIsProcessingCallback(false)
       })
     }
   }, [refetch])
-
-  console.log('ProtectedRoute: isLoading =', isLoading, ', session =', session, ', isProcessingCallback =', isProcessingCallback)
 
   if (isLoading || isProcessingCallback) {
     return (
@@ -49,7 +43,6 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!session) {
-    console.log('ProtectedRoute: no session, redirecting to /sign-in')
     return <Navigate to="/sign-in" replace />
   }
 
