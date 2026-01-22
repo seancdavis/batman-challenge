@@ -1,20 +1,9 @@
 [build]
-  command = "npm run build"
+  command = "npm run build && npm run generate-redirects"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
 
-# Proxy Neon Auth requests through our domain to avoid cross-site cookie issues on mobile
-# NEON_AUTH_URL_PROXY should be set to the Neon Auth URL (e.g., https://ep-xxx.neonauth.xxx.neon.tech/neondb/auth)
-[[redirects]]
-  from = "/neon-auth/*"
-  to = "${NEON_AUTH_URL_PROXY}/:splat"
-  status = 200
-  force = true
-
-# SPA fallback - must be last
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Redirects are generated dynamically via generate-redirects script
+# to support environment variable interpolation for the Neon Auth proxy
