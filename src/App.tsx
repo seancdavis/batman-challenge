@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import { Layout } from './components/layout/Layout'
@@ -8,9 +9,32 @@ import { SignInPage } from './pages/SignInPage'
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { session, isLoading } = useAuth()
+  const { session, isLoading, refetch } = useAuth()
+  const [isProcessingCallback, setIsProcessingCallback] = useState(() => {
+    // Initialize to true if we have a verifier in URL (prevents flash redirect)
+    return new URLSearchParams(window.location.search).has('neon_auth_session_verifier')
+  })
 
-  if (isLoading) {
+  // Check if we're returning from OAuth callback (has session verifier in URL)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const hasVerifier = params.has('neon_auth_session_verifier')
+
+    if (hasVerifier) {
+      // The SDK's getSession automatically includes the verifier from the URL
+      // We just need to call refetch while the verifier is still in the URL
+      refetch().then(() => {
+        // Clean up the URL after the session is fetched
+        window.history.replaceState({}, '', window.location.pathname)
+        setIsProcessingCallback(false)
+      }).catch(() => {
+        window.history.replaceState({}, '', window.location.pathname)
+        setIsProcessingCallback(false)
+      })
+    }
+  }, [refetch])
+
+  if (isLoading || isProcessingCallback) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-gray-400">Loading...</div>
